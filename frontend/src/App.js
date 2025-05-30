@@ -3,8 +3,9 @@ import { useState } from "react";
 function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
-  // Obtém dinamicamente o domínio para o parâmetro parent do embed
-  const parentDomain = window.location.hostname;
+
+  // Usa host completo (hostname:port) para o parent do embed
+  const parentDomain = window.location.host;
 
   const start = async () => {
     await fetch("/start-dub", {
