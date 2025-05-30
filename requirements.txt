@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+whisper
+requests
+boto3
+redis
+python-multipart
