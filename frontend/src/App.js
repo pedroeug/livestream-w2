@@ -4,8 +4,8 @@ function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
 
-  // Usa host completo (hostname:port) para o parent do embed
-  const parentDomain = window.location.host;
+  // Dominio correto obtido do console
+  const parentDomain = "livestream-w2.onrender.com";
 
   const start = async () => {
     await fetch("/start-dub", {
