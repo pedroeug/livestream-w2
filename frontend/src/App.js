@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
-
-  // Domínio exato da sua aplicação no Render (sem https://)
   const parentDomain = "livestream-w2.onrender.com";
 
   useEffect(() => {
@@ -15,7 +13,7 @@ function App() {
       new window.Twitch.Embed("twitch-embed", {
         width: 854,
         height: 480,
-        channel,
+        channel: channel,
         parent: [parentDomain],
         autoplay: true,
         muted: false
@@ -35,15 +33,19 @@ function App() {
   return (
     <div style={{ padding: 20, fontFamily: "sans-serif" }}>
       <h1>Livestream W2 – Twitch Dub</h1>
+
       {!started ? (
         <>
           <input
             style={{ padding: 8, width: 300 }}
             placeholder="Canal da Twitch"
             value={channel}
-            onChange={e => setChannel(e.target.value)}
+            onChange={(e) => setChannel(e.target.value)}
           />
-          <button style={{ marginLeft: 8, padding: "8px 16px" }} onClick={start}>
+          <button
+            style={{ marginLeft: 8, padding: "8px 16px" }}
+            onClick={start}
+          >
             Assistir com Dublagem
           </button>
         </>
@@ -54,7 +56,7 @@ function App() {
             controls
             autoPlay
             style={{ display: "block", marginTop: 10 }}
-            src={`/api/audio/000`}  {/* note o /api/ */}
+            src={`/api/audio/000`}
           />
           <p>Áudio com ~30s de atraso</p>
         </div>
