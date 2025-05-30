@@ -4,16 +4,14 @@ function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
 
-  // Host exato da sua aplicação (sem https://)
+  // Domínio exato da sua aplicação no Render (sem https://)
   const parentDomain = "livestream-w2.onrender.com";
 
   useEffect(() => {
-    if (started && window.Twitch) {
-      // Limpa embed anterior (se existir)
+    if (started && window.Twitch && window.Twitch.Embed) {
       const container = document.getElementById("twitch-embed");
       container.innerHTML = "";
 
-      // Cria novo player
       new window.Twitch.Embed("twitch-embed", {
         width: 854,
         height: 480,
@@ -26,10 +24,10 @@ function App() {
   }, [started, channel]);
 
   const start = async () => {
-    await fetch("/start-dub", {
+    await fetch("/api/start-dub", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ channel }),
+      body: JSON.stringify({ channel })
     });
     setStarted(true);
   };
@@ -45,10 +43,7 @@ function App() {
             value={channel}
             onChange={e => setChannel(e.target.value)}
           />
-          <button
-            style={{ marginLeft: 8, padding: "8px 16px" }}
-            onClick={start}
-          >
+          <button style={{ marginLeft: 8, padding: "8px 16px" }} onClick={start}>
             Assistir com Dublagem
           </button>
         </>
@@ -59,7 +54,7 @@ function App() {
             controls
             autoPlay
             style={{ display: "block", marginTop: 10 }}
-            src={`/audio/000`}
+            src={`/api/audio/000`}  {/* note o /api/ */}
           />
           <p>Áudio com ~30s de atraso</p>
         </div>
