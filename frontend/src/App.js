@@ -3,6 +3,8 @@ import { useState } from "react";
 function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
+  // Obtém dinamicamente o domínio para o parâmetro parent do embed
+  const parentDomain = window.location.hostname;
 
   const start = async () => {
     await fetch("/start-dub", {
@@ -31,7 +33,7 @@ function App() {
       ) : (
         <div style={{ marginTop: 20 }}>
           <iframe
-            src={`https://player.twitch.tv/?channel=${channel}&parent=livestream-w2-demo.onrender.com&autoplay=true&muted=false`}
+            src={`https://player.twitch.tv/?channel=${channel}&parent=${parentDomain}&autoplay=true&muted=false`}
             height="360"
             width="640"
             allowFullScreen
@@ -40,7 +42,7 @@ function App() {
             controls
             autoPlay
             style={{ display: "block", marginTop: 10 }}
-            src={`/audio/000`} 
+            src={`/audio/000`}
           />
           <p>Áudio com ~30s de atraso</p>
         </div>
