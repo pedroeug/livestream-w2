@@ -1,17 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [channel, setChannel] = useState("");
   const [started, setStarted] = useState(false);
 
-  // Dominio correto obtido do console
+  // Host exato da sua aplicação (sem https://)
   const parentDomain = "livestream-w2.onrender.com";
+
+  useEffect(() => {
+    if (started && window.Twitch) {
+      // Limpa embed anterior (se existir)
+      const container = document.getElementById("twitch-embed");
+      container.innerHTML = "";
+
+      // Cria novo player
+      new window.Twitch.Embed("twitch-embed", {
+        width: 854,
+        height: 480,
+        channel,
+        parent: [parentDomain],
+        autoplay: true,
+        muted: false
+      });
+    }
+  }, [started, channel]);
 
   const start = async () => {
     await fetch("/start-dub", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ channel })
+      body: JSON.stringify({ channel }),
     });
     setStarted(true);
   };
@@ -27,18 +45,16 @@ function App() {
             value={channel}
             onChange={e => setChannel(e.target.value)}
           />
-          <button style={{ marginLeft: 8, padding: "8px 16px" }} onClick={start}>
+          <button
+            style={{ marginLeft: 8, padding: "8px 16px" }}
+            onClick={start}
+          >
             Assistir com Dublagem
           </button>
         </>
       ) : (
         <div style={{ marginTop: 20 }}>
-          <iframe
-            src={`https://player.twitch.tv/?channel=${channel}&parent=${parentDomain}&autoplay=true&muted=false`}
-            height="360"
-            width="640"
-            allowFullScreen
-          />
+          <div id="twitch-embed" />
           <audio
             controls
             autoPlay
